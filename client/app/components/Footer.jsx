@@ -1,3 +1,5 @@
+const YEAR = new Date().getFullYear();
+
 export default function Footer() {
   return (
     <footer className="border-t border-zinc-100 bg-zinc-50">
@@ -45,7 +47,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-8 text-sm text-zinc-400 md:flex-row">
-          <span>© {new Date().getFullYear()} Velocity Reserve. All rights reserved.</span>
+          <span>© {YEAR} Velocity Reserve. All rights reserved.</span>
           <span>Dummy checkout only — no real payments are processed.</span>
         </div>
       </div>

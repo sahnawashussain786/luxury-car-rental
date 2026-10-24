@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, Suspense, useState, useEffect } from 'react';
+import { useRef, Suspense, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
@@ -135,14 +135,13 @@ function Loader() {
 }
 
 function CarScene({ car, autoRotate = true, accentColor }) {
-  const { camera } = useThree();
-  const glRef = useRef();
+  const { gl } = useThree();
 
   useEffect(() => {
-    if (glRef.current) {
-      glRef.current.toneMappingExposure = 1.05;
+    if (gl) {
+      gl.toneMappingExposure = 1.05;
     }
-  }, []);
+  }, [gl]);
 
   return (
     <>
@@ -175,7 +174,7 @@ function CarScene({ car, autoRotate = true, accentColor }) {
       <Suspense fallback={<Loader />}>
         {PLACEHOLDER_MODEL_PATH ? (
           <mesh castShadow receiveShadow>
-            <gltfModel path={PLACEHOLDER_MODEL_PATH} />
+            
           </mesh>
         ) : (
           <PlaceholderCar color={car?.color ?? '#e6e6e6'} accentColor={accentColor ?? '#b3b3b3'} />
@@ -205,6 +204,17 @@ function CarScene({ car, autoRotate = true, accentColor }) {
 }
 
 export default function CarViewer({ car, autoRotate = true, accentColor, className, style }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+    if (gl) {
+      gl.toneMappingExposure = 1.05;
+    }
+  }, []);
+
   return (
     <div
       className={className ?? ''}
@@ -216,10 +226,10 @@ export default function CarViewer({ car, autoRotate = true, accentColor, classNa
       }}
     >
       <Canvas
+        ref={canvasRef}
         gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
         shadows
         camera={{ position: [5, 2.5, 5], fov: 40 }}
-        ref={glRef}
       >
         <CarScene car={car} autoRotate={autoRotate} accentColor={accentColor} />
       </Canvas>

@@ -215,7 +215,7 @@ export default function CarDetailPage({ params }) {
                   <a href="#gallery" className="hover:text-zinc-900">Gallery</a>
                   <a href="#booking" className="hover:text-zinc-900">Book now</a>
                 </nav>
-              </nav>
+              </div>
             </header>
 
             <div className="mx-auto max-w-7xl px-6 py-10 lg:px-12">
